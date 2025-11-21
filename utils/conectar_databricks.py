@@ -20,5 +20,6 @@ def ejecutar_query_databricks(query: str)->list:
     with conn.cursor() as cursor:
         data = cursor.execute(query)
         data = data.fetchall()
+        description = cursor.description
 
-        return data
+        return data, description
