@@ -23,7 +23,7 @@ def obtener_datos_polars(query: str):
 
     df = pl.DataFrame(
         data=filas,
-        schema=columnas
+        schema=[(col, pl.Utf8) for col in columnas]
     )
 
     return df
