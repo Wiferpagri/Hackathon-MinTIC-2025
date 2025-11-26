@@ -21,9 +21,6 @@ def obtener_datos_polars(query: str):
 
     columnas = [desc[0] for desc in descripcion_cursor]
 
-    df = pl.DataFrame(
-        data=filas,
-        schema=[(col, pl.Utf8) for col in columnas]
-    )
+    df = pl.DataFrame(data=filas, schema=columnas)
 
     return df
