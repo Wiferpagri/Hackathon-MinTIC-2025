@@ -50,19 +50,42 @@ https://www.datos.gov.co/Vivienda-Ciudad-y-Territorio/Registro-de-transacciones-
 
 ## 📁 Estructura del Proyecto
 ```
-*Hackathon-MinTIC-202:
-  ├── app/ # Aplicación principal (dashboards, API, UI, etc.)
-  ├── docs/ # Documentación del proyecto
-  ├── notebooks/ # Exploración, análisis y prototipos
-  ├── src/ # Código fuente (ETL, modelos, pipelines, etc.)
-  ├── tests/ # Pruebas unitarias
-  ├── main/ # ejecucion principal del proyecto.
-  └── utils/ # Funciones auxiliares y utilidades*
+Hackathon-MinTIC-2025/
+├── README.md
+├── LICENSE
+├── .gitignore
+│
+├── docs/ # Documentación del proyecto
+│   ├── Documentación.pdf
+│
+├── notebooks/ # Exploración y prototipado
+│   ├── Anomalias en predios.ipynb
+│   ├── Data Cleaning.ipynb
+│   ├── 4.0_modelos_anomalias.ipynb
+│   ├── Preparacion de datos para modelo de deteccion de anomalias.ipynb
+│
+│
+├── src/ # Código fuente modularizado
+│   ├── etl/ # Scripts de extracción, transformación y carga
+│   │   ├── data_loader
+│
+├── data_model/ # Definiciones de esquemas y reglas
+│   ├── esquema_bronze.json
+│   ├── esquema_silver.json
+│   ├── esquema_gold.json
+│   ├── features_ml.json
+│   └── reglas_calidad.json
+│
+├── dashboards/ # Archivos de Power BI
+│   ├── transacciones_anomalas.pbix
+│   └── transacciones_inmobiliarias.pbix
+│
+└── anexos/ # Archivos complementarios y catálogos
+    ├── Directorio_ORIP_20251128.csv
+    ├── DIVIPOLA-_Codigos_municipios_20251121.csv
+    ├── transacciones_inmobiliarias.csv
+    └── tabla_reglas_aplicadas.csv
 ```
----
-
-## 🚀 Estado Actual
-*Sprint 1: Planeación y puesta en marcha de acciones iniciales.*
 
 ---
 
