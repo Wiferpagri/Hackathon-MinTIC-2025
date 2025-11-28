@@ -1,4 +1,11 @@
 *.csv
+<<<<<<< HEAD
 .venv
 __pycache__
 venv
+=======
+.env
+__pycache__/
+*.parquet
+*.ipynb_checkpoints/
+>>>>>>> d9327b716b39197e4448164d609aae7c5c4cb326

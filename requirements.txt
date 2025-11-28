@@ -1,0 +1,6 @@
+databricks-sql-connector==4.2.1
+dotenv==0.9.9
+pandas==2.2.2
+polars==1.32.2
+pyarrow==22.0.0
+scikit-learn==1.7.2
