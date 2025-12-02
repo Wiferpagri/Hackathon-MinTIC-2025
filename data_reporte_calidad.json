@@ -1,12 +1,11 @@
 {
     "executiveSummary": {
         "total_registros": "30,903,248",
-        "puntaje_promedio": "94.20%",
-        "registros_criticos": "0",
-        "porcentaje_criticos": "0.00%",
-        "gap_secuencia_pct": "2.01%",
-        "divipola_invalido_count": "20,113",
-        "valor_nulo_pct": "34.65%"
+        "puntaje_promedio": "94.20",
+        "total_reglas": "50",
+        "registros_criticos": "10,709,803",
+        "porcentaje_criticos": "34.66%",
+        "porcentaje_hallazgos_global": "81.07%"
     },
     "ruleMetrics": [
         {
