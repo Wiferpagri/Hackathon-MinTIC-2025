@@ -1,0 +1,157 @@
+{
+    "executiveSummary": {
+        "total_registros": "30,903,248",
+        "puntaje_promedio": "94.20%",
+        "registros_criticos": "0",
+        "porcentaje_criticos": "0.00%",
+        "gap_secuencia_pct": "2.01%",
+        "divipola_invalido_count": "20,113",
+        "valor_nulo_pct": "34.65%"
+    },
+    "ruleMetrics": [
+        {
+            "technical_name": "iso_fecha_apertura",
+            "readable_name": "Fecha Apertura: Formato ISO Inv\u00e1lido",
+            "affected_count": "30,903,248",
+            "affected_pct": "100.00%",
+            "type": "Formato",
+            "description": "Se detecta que el campo FECHA_APERTURA no cumple con el formato est\u00e1ndar ISO 8601 (YYYY-MM-DD), afectando la integraci\u00f3n temporal de los datos."
+        },
+        {
+            "technical_name": "iso_fecha_radica",
+            "readable_name": "Fecha Radicaci\u00f3n: Formato ISO Inv\u00e1lido",
+            "affected_count": "30,903,248",
+            "affected_pct": "100.00%",
+            "type": "Formato",
+            "description": "El campo FECHA_RADICA no cumple con el formato est\u00e1ndar ISO 8601 (YYYY-MM-DD), lo que puede causar errores en filtros y ordenaci\u00f3n."
+        },
+        {
+            "technical_name": "nombre_natujur",
+            "readable_name": "Naturaleza Jur\u00eddica: Valor no Estandarizado",
+            "affected_count": "18,330,009",
+            "affected_pct": "59.31%",
+            "type": "Formato",
+            "description": "El valor en el campo NATU_JURIDICA no coincide con ninguno de los valores estandarizados esperados (natural, jur\u00eddica, etc.) seg\u00fan el maestro de clasificaci\u00f3n."
+        },
+        {
+            "technical_name": "estado_folio_nulo",
+            "readable_name": "Estado Folio: Ausencia Injustificada de Valor",
+            "affected_count": "13,579,939",
+            "affected_pct": "43.94%",
+            "type": "Consistencia",
+            "description": "El campo ESTADO_FOLIO est\u00e1 vac\u00edo (NULL) o ausente, lo cual es obligatorio para la validez de cualquier registro registral."
+        },
+        {
+            "technical_name": "tiene_valor_faltante",
+            "readable_name": "Valor Transacci\u00f3n: Indicador 'Tiene Valor' Sin Monto",
+            "affected_count": "10,707,398",
+            "affected_pct": "34.65%",
+            "type": "Consistencia",
+            "description": "El indicador 'TIENE_VALOR' es TRUE (1), pero el campo de VALOR de la transacci\u00f3n es NULL o cero, afectando an\u00e1lisis financieros y tributarios."
+        },
+        {
+            "technical_name": "orip_longitud",
+            "readable_name": "ORIP (Oficina): C\u00f3digo con Longitud Incorrecta",
+            "affected_count": "8,637,118",
+            "affected_pct": "27.95%",
+            "type": "Formato",
+            "description": "El c\u00f3digo de la ORIP (Oficina de Registro de Instrumentos P\u00fablicos) tiene una longitud incorrecta o at\u00edpica, lo que impide la correcta identificaci\u00f3n de la oficina."
+        },
+        {
+            "technical_name": "count_de_en_cero",
+            "readable_name": "Duplicidad: Campo 'De' con Conteo Cero",
+            "affected_count": "6,831,830",
+            "affected_pct": "22.11%",
+            "type": "Consistencia",
+            "description": "En el proceso de consolidaci\u00f3n, el conteo de la columna 'DE' resulta ser cero, indicando una posible anomal\u00eda o error en la l\u00f3gica de desduplicaci\u00f3n de campos."
+        },
+        {
+            "technical_name": "count_a_en_cero",
+            "readable_name": "Duplicidad: Campo 'A' con Conteo Cero",
+            "affected_count": "4,254,510",
+            "affected_pct": "13.77%",
+            "type": "Consistencia",
+            "description": "En el proceso de consolidaci\u00f3n, el conteo de la columna 'A' resulta ser cero, indicando una posible anomal\u00eda o error en la l\u00f3gica de desduplicaci\u00f3n de campos."
+        },
+        {
+            "technical_name": "gap_secuencia",
+            "readable_name": "Secuencia de Anotaci\u00f3n: Salto o Ruptura Detectada",
+            "affected_count": "621,923",
+            "affected_pct": "2.01%",
+            "type": "Consistencia",
+            "description": "Se identifica una ruptura o salto en la numeraci\u00f3n secuencial del campo NUM_ANOTACION dentro de un mismo FOLIO, lo cual rompe la trazabilidad hist\u00f3rica del predio."
+        },
+        {
+            "technical_name": "tipo_predio_zona",
+            "readable_name": "Tipo de Predio / Zona: Valor Inv\u00e1lido o Ausente",
+            "affected_count": "380,012",
+            "affected_pct": "1.23%",
+            "type": "Formato",
+            "description": "El TIPO_PREDIO o ZONA_PREDIO contiene un valor que no es v\u00e1lido seg\u00fan el maestro de clasificaci\u00f3n geogr\u00e1fica oficial."
+        },
+        {
+            "technical_name": "cronologia_folio",
+            "readable_name": "Cronolog\u00eda: Fechas de Anotaci\u00f3n Fuera de Orden",
+            "affected_count": "42,020",
+            "affected_pct": "0.14%",
+            "type": "Consistencia",
+            "description": "Las fechas de las anotaciones dentro de un mismo folio no siguen un orden cronol\u00f3gico ascendente, lo cual invalida la secuencia de eventos registrales."
+        },
+        {
+            "technical_name": "orip_invalido",
+            "readable_name": "ORIP (Oficina): C\u00f3digo no Encontrado en Maestro Oficial",
+            "affected_count": "20,113",
+            "affected_pct": "0.07%",
+            "type": "Consistencia",
+            "description": "El c\u00f3digo de ORIP existe pero no se encuentra en el listado oficial de c\u00f3digos de oficinas de registro (Maestro DIVIPOLA/ORIP)."
+        },
+        {
+            "technical_name": "unicidad_predio_nuevo",
+            "readable_name": "Unicidad: Predio Nuevo ya Existente",
+            "affected_count": "15,435",
+            "affected_pct": "0.05%",
+            "type": "Consistencia",
+            "description": "Se detecta que un registro marcado como 'Predio Nuevo' ya existe previamente en la base de datos con esa matr\u00edcula, violando la unicidad."
+        },
+        {
+            "technical_name": "nombre_mpio",
+            "readable_name": "Municipio: Nombre no Estandarizado (Faltan tildes)",
+            "affected_count": "6,705",
+            "affected_pct": "0.02%",
+            "type": "Formato",
+            "description": "El nombre del Municipio contiene inconsistencias de formato, tildes, o may\u00fasculas que impiden la estandarizaci\u00f3n con el DIVIPOLA."
+        },
+        {
+            "technical_name": "anotacion_duplicada",
+            "readable_name": "Anotaci\u00f3n Duplicada: Existe Anotaci\u00f3n con Mismo N\u00famero",
+            "affected_count": "3,217",
+            "affected_pct": "0.01%",
+            "type": "Consistencia",
+            "description": "Existe m\u00e1s de un registro de anotaci\u00f3n con el mismo n\u00famero para un folio, indicando duplicidad exacta de la anotaci\u00f3n."
+        },
+        {
+            "technical_name": "fecha_apertura_futura",
+            "readable_name": "Fecha Apertura: Fecha Posterior a la Actual",
+            "affected_count": "1,483",
+            "affected_pct": "0.00%",
+            "type": "Consistencia",
+            "description": "Fecha Apertura: Fecha Posterior a la Actual"
+        },
+        {
+            "technical_name": "fecha_apertura_distinta",
+            "readable_name": "Fecha Apertura: Distinta a la del Folio Inicial",
+            "affected_count": "875",
+            "affected_pct": "0.00%",
+            "type": "Consistencia",
+            "description": "Fecha Apertura: Distinta a la del Folio Inicial"
+        },
+        {
+            "technical_name": "fecha_radica_nula",
+            "readable_name": "Fecha Radicaci\u00f3n: Ausente",
+            "affected_count": "1",
+            "affected_pct": "0.00%",
+            "type": "Consistencia",
+            "description": "Fecha Radicaci\u00f3n: Ausente"
+        }
+    ]
+}
