@@ -1,7 +1,7 @@
-# Sistema de Monitoreo y Detección de Anomalías en Transacciones Inmobiliarias (2015–2025)
+# Sistema de Monitoreo y Detección de Anomalías en Transacciones Inmobiliarias (2015–2023)
 
 ## 📌 Descripción del Reto
-Colombia concentra más de **34 millones de registros de transacciones inmobiliarias únicas** entre 2015 y 2025, distribuidas en **1.105 municipios**. Esta información es esencial para la planeación territorial, el análisis de mercado, la supervisión operativa y la evaluación de riesgos.
+Colombia concentra aproximadamente **31 millones de registros de transacciones inmobiliarias únicas** entre 2015 y 2023, distribuidas en **1.105 municipios**. Esta información es esencial para la planeación territorial, el análisis de mercado, la supervisión operativa y la evaluación de riesgos.
 
 No obstante, el **alto volumen**, la **heterogeneidad** y las **posibles inconsistencias** en los datos generan limitaciones para:
 - Detectar errores o anomalías.
