@@ -143,7 +143,7 @@
                     // Opcional: Mostrar un mensaje de error en la UI si la carga falla
                     const errorElement = document.createElement('p');
                     errorElement.className = 'text-center text-red-600 font-bold p-4 bg-red-100 rounded-lg';
-                    errorElement.textContent = `ERROR: No se pudo cargar el archivo 'data_reporte_Calidad.json'. Revise la ruta del archivo. Detalle: ${error.message}`;
+                    errorElement.textContent = `ERROR: No se pudo cargar el archivo 'data_reporte_calidad.json'. Revise la ruta del archivo. Detalle: ${error.message}`;
                     document.getElementById('executive-summary-cards').insertAdjacentElement('beforebegin', errorElement);
                 });
         }
