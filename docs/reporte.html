@@ -1,0 +1,220 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REPORTE DE CALIDAD IGAC - Transacciones Inmobiliarias</title>
+    <!-- Carga Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+        }
+        /* Estilo para la fila seleccionable */
+        .data-row:hover {
+            cursor: pointer;
+            background-color: #f0f4f8; /* Un gris muy claro al pasar el mouse */
+        }
+        /* Estilo para la tabla sticky header */
+        .sticky-header th {
+            position: sticky;
+            top: 0;
+            background-color: #ffffff;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- Título Principal -->
+        <h1 class="text-3xl font-extrabold text-indigo-700 mb-2 leading-tight">
+            REPORTE ANALÍTICO DE CALIDAD EN EL REGISTRO DE TRANSACCIONES INMOBILIARIAS EN COLOMBIA IGAC 2015 - 2023
+        </h1>
+
+        <!-- Entidad y Subtítulos -->
+        <p class="text-sm font-semibold text-gray-700 mt-4">ENTIDAD: Instituto Geográfico Agustín Codazzi</p>
+        <p class="text-xl font-medium text-gray-800 mt-2 mb-4">
+            ANÁLISIS Y DETECCIÓN DE ANOMALÍAS <span class="text-base font-normal text-gray-500">(30.9 Millones de Registros 2015-2025)</span>
+        </p>
+        
+        <!-- Información del Sistema y Fechas -->
+        <div class="bg-gray-100 p-4 rounded-lg shadow-inner mb-8 border-l-4 border-gray-400">
+            <p class="text-sm text-gray-700 font-medium">Sistema de monitoreo y detección de anomalías en transacciones inmobiliarias de Colombia.</p>
+            <div class="flex flex-col sm:flex-row sm:space-x-8 mt-2 text-xs text-gray-500">
+                <p><span class="font-semibold">Fecha de Corte de Datos:</span> 30 de Noviembre de 2025</p>
+                <p><span class="font-semibold">Versión del Reporte:</span> v1.0.0</p>
+            </div>
+        </div>
+
+        <p class="text-gray-600 mb-8 font-medium">Haga clic en cualquier fila de la tabla para ver la descripción técnica detallada de la regla de calidad.</p>
+
+        <!-- Contenedor del Resumen Ejecutivo (Ahora 3 tarjetas) -->
+        <!-- Modificado: de md:grid-cols-4 a md:grid-cols-3 -->
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8" id="executive-summary-cards">
+            <!-- Card 1: Puntaje Promedio -->
+            <div class="bg-white p-4 rounded-xl shadow border-l-4 border-indigo-500">
+                <p class="text-xs font-medium text-gray-500 uppercase">Puntaje Promedio</p>
+                <p id="puntaje-promedio" class="text-2xl font-bold text-gray-900 mt-1">...</p>
+            </div>
+            <!-- Card 2: Registros Totales -->
+            <div class="bg-white p-4 rounded-xl shadow border-l-4 border-blue-500">
+                <p class="text-xs font-medium text-gray-500 uppercase">Registros Totales</p>
+                <p id="total-registros" class="text-2xl font-bold text-gray-900 mt-1">...</p>
+            </div>
+            <!-- Card 3: Registros Críticos Afectados (%) -->
+            <div class="bg-white p-4 rounded-xl shadow border-l-4 border-red-500">
+                <p class="text-xs font-medium text-gray-500 uppercase">Afectación Crítica (%)</p>
+                <p id="porcentaje-criticos" class="text-2xl font-bold text-red-600 mt-1">...</p>
+            </div>
+            <!-- CARD 4 (GAP Secuencia) ELIMINADA -->
+        </div>
+
+        <!-- Contenedor de la Tabla Principal -->
+        <div class="bg-white shadow-xl rounded-xl overflow-hidden">
+            <div class="overflow-x-auto max-h-[70vh]">
+                <table id="alert-table" class="min-w-full divide-y divide-gray-200">
+                    <!-- Cabecera Sticky -->
+                    <thead class="bg-gray-50 sticky-header">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Regla de Calidad (Nombre Legible)</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Registros Afectados</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Porcentaje Afectado</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo (Ponderación)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body" class="bg-white divide-y divide-gray-200">
+                        <!-- Las filas se insertarán aquí por JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar los detalles de la regla -->
+    <div id="modal-container" class="fixed inset-0 bg-gray-600 bg-opacity-75 hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 transform transition-all duration-300">
+            <div class="flex justify-between items-start mb-4">
+                <h3 id="modal-title" class="text-xl font-bold text-indigo-700">Detalles de la Regla</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-700 transition duration-150">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div class="space-y-4 text-gray-700">
+                <div>
+                    <p class="font-semibold text-sm uppercase text-gray-500">Regla Técnica de Columna:</p>
+                    <p id="modal-technical-name" class="text-lg font-mono bg-gray-100 p-2 rounded-lg"></p>
+                </div>
+                <div>
+                    <p class="font-semibold text-sm uppercase text-gray-500">Descripción Técnica Completa:</p>
+                    <p id="modal-description" class="leading-relaxed"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 1. DATOS ORIGINALES (Carga de JSON) ---
+        // Se mantiene la carga mediante fetch, asumiendo que el archivo 
+        // 'data_reporte_Calidad.json' es accesible desde el contexto de ejecución.
+        
+        let REPORT_DATA_JSON = null;
+        let qualityData = [];
+
+        // Función principal para cargar datos e inicializar el dashboard
+        function initDashboard() {
+            fetch('data_reporte_Calidad.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    REPORT_DATA_JSON = data;
+                    qualityData = data.ruleMetrics;
+
+                    updateExecutiveSummary(data.executiveSummary);
+                    formatTable();
+                })
+                .catch(error => {
+                    console.error("Error cargando JSON:", error);
+                    // Opcional: Mostrar un mensaje de error en la UI si la carga falla
+                    const errorElement = document.createElement('p');
+                    errorElement.className = 'text-center text-red-600 font-bold p-4 bg-red-100 rounded-lg';
+                    errorElement.textContent = `ERROR: No se pudo cargar el archivo 'data_reporte_Calidad.json'. Revise la ruta del archivo. Detalle: ${error.message}`;
+                    document.getElementById('executive-summary-cards').insertAdjacentElement('beforebegin', errorElement);
+                });
+        }
+
+
+        // --- 2. FUNCIONES DE RESUMEN EJECUTIVO Y TABLA ---
+
+        function updateExecutiveSummary(summary) {
+            document.getElementById('total-registros').textContent = summary.total_registros;
+            document.getElementById('puntaje-promedio').textContent = summary.puntaje_promedio;
+            document.getElementById('porcentaje-criticos').textContent = summary.porcentaje_criticos;
+            // ELIMINADA: La línea que actualizaba 'gap-secuencia-pct' ya no es necesaria.
+            // Opcional: Podrías añadir más lógica de color si el porcentaje crítico supera un umbral.
+        }
+
+        function formatTable() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = ''; // Limpiar tabla
+
+            qualityData.forEach((item) => {
+                const row = tbody.insertRow();
+                row.className = 'data-row transition duration-150 ease-in-out';
+                row.onclick = () => showDetails(item);
+
+                // Columna 1: Regla de Calidad (Nombre Legible)
+                let cell1 = row.insertCell();
+                cell1.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900';
+                cell1.textContent = item.readable_name;
+
+                // Columna 2: Registros Afectados
+                let cell2 = row.insertCell();
+                cell2.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                cell2.textContent = item.affected_count;
+
+                // Columna 3: Porcentaje Afectado
+                let cell3 = row.insertCell();
+                cell3.className = 'px-6 py-4 whitespace-nowrap text-sm font-semibold';
+                cell3.textContent = item.affected_pct;
+                // Colorear el porcentaje (crítico > 10%)
+                if (parseFloat(item.affected_pct.replace('%', '').replace(',', '.')) > 10) {
+                    cell3.classList.add('text-red-600', 'font-extrabold');
+                } else {
+                    cell3.classList.add('text-green-600');
+                }
+
+                // Columna 4: Tipo (Ponderación)
+                let cell4 = row.insertCell();
+                cell4.className = 'px-6 py-4 whitespace-nowrap text-sm';
+                cell4.textContent = item.type;
+                cell4.classList.add(item.type.includes('Consistencia') ? 'text-indigo-600' : 'text-blue-600');
+            });
+        }
+
+        // --- 3. FUNCIONES DEL MODAL ---
+
+        function showDetails(item) {
+            document.getElementById('modal-title').textContent = item.readable_name;
+            document.getElementById('modal-technical-name').textContent = item.technical_name;
+            document.getElementById('modal-description').textContent = item.description;
+            
+            document.getElementById('modal-container').classList.remove('hidden');
+            document.getElementById('modal-container').classList.add('flex');
+        }
+
+        function closeModal() {
+            document.getElementById('modal-container').classList.add('hidden');
+            document.getElementById('modal-container').classList.remove('flex');
+        }
+
+        // Inicializar el dashboard al cargar la página
+        window.onload = initDashboard;
+    </script>
+</body>
+</html>
