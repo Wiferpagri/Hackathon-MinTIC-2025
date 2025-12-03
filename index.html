@@ -45,7 +45,7 @@
             <div class="flex flex-col md:flex-row md:items-center justify-between mt-2 mb-6">
                 <p class="text-xl font-medium text-gray-800">
                     ANÁLISIS Y DETECCIÓN DE ANOMALÍAS 
-                    <span class="block md:inline text-base font-normal text-gray-500 ml-0 md:ml-2">(30.9 Millones de Registros 2015-2023)</span>
+                    <span class="block md:inline text-base font-normal text-gray-500 ml-0 md:ml-2">(30.9 Millones de Registros 2015-2025)</span>
                 </p>
             </div>
             
@@ -77,16 +77,28 @@
                 <p id="total-registros" class="text-2xl font-extrabold text-gray-900 mt-2">--</p>
             </div>
 
-            <div class="bg-white p-5 rounded-xl shadow-sm border-t-4 border-orange-500">
-                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Hallazgos de Consistencia</p>
+            <div id="hallazgos-card" onclick="showHallazgosDocs()" 
+                 class="bg-white p-5 rounded-xl shadow-sm border-t-4 border-orange-500 cursor-pointer hover:shadow-lg transition duration-200">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">
+                    Hallazgos de Consistencia
+                    <span class="ml-1 text-orange-400">
+                        <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </span>
+                </p>
                 <p id="pct-hallazgos" class="text-3xl font-extrabold text-orange-600 mt-2">--</p>
                 <p class="text-[10px] text-gray-400 mt-1">(Excluye errores de formato)</p>
             </div>
 
-            <div class="bg-white p-5 rounded-xl shadow-sm border-t-4 border-red-500">
-                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">% Estado Crítico</p>
+            <div id="criticality-card" onclick="showCriticalityDocs()" 
+                 class="bg-white p-5 rounded-xl shadow-sm border-t-4 border-red-500 cursor-pointer hover:shadow-lg transition duration-200">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">
+                    % Estado Crítico 
+                    <span class="ml-1 text-red-400">
+                        <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </span>
+                </p>
                 <p id="pct-criticos" class="text-3xl font-extrabold text-red-600 mt-2">--</p>
-                <p class="text-[10px] text-gray-400 mt-1">(Score < 90 o 2+ errores de consistencia)</p>
+                <p class="text-[10px] text-gray-400 mt-1">(Basado en P10 y Consistencia)</p>
             </div>
         </div>
 
@@ -139,14 +151,20 @@
                         
                         <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-100 relative">
                             <div class="absolute top-0 left-0 w-1 h-full bg-indigo-500 rounded-l-lg"></div>
-                            <p class="font-bold text-indigo-900 mb-3 text-base">Fórmula de Puntaje</p>
-                            <div class="font-mono text-sm bg-white p-3 rounded border border-indigo-200 mb-3 text-center text-indigo-700 font-bold shadow-sm">
-                                SCORE = 100 - Σ(Penalización)
+                            <p class="font-bold text-indigo-900 mb-3 text-base">Fórmula de Puntaje Ponderado (Normalizado)</p>
+                            <div class="font-mono text-xs bg-white p-3 rounded border border-indigo-200 mb-3 text-center text-indigo-700 font-bold shadow-sm">
+                                SCORE = 100 - [ (Σ Penalización Ponderada / Total Puntos Posibles) x 100 ]
                             </div>
-                            <p class="text-xs leading-relaxed text-indigo-800">
-                                Cada registro inicia con <span class="font-bold">100 puntos base</span>. Se restan puntos acumulativos por cada regla de calidad que el registro incumpla.
-                            </p>
-                        </div>
+
+                            <div class="mt-4 pt-3 border-t border-indigo-200">
+                                <span class="font-bold text-indigo-900 block mb-1">Total Puntos Posibles (T.P.P.)</span>
+                                <p class="text-xs leading-relaxed text-indigo-800">
+                                    Este valor (e.g., 88 puntos) es la suma de los pesos de todas las reglas definidas en el sistema. Se calcula dinámicamente como la máxima penalización posible:
+                                    <span class="font-mono bg-indigo-100 px-1 py-0.5 rounded text-indigo-800 block mt-1 mt-2 p-2 border border-indigo-200">
+                                        T.P.P. = (Total Reglas Formato x 1) + (Total Reglas Consistencia x 2)
+                                    </span>
+                                </p>
+                            </div>
 
                         <div>
                             <h4 class="font-bold text-gray-800 mb-4 text-base">Pesos y Ponderación</h4>
@@ -176,7 +194,9 @@
 
                         <div class="border-t pt-4 mt-2">
                             <p class="text-xs italic text-gray-400">
-                                * Nota: Se considera "Registro Crítico" a cualquier transacción con un puntaje final inferior a **90** puntos o que acumule dos o más errores de Consistencia.
+                                * Nota sobre Reglas Activas: Las reglas de calidad que aparecen en la tabla son aquellas que detectaron
+                                al menos un registro inconsistente. Las demás reglas evaluadas que no se visualizan en el reporte concluyeron
+                                que no hubo problemas con ellas (0 registros afectados).
                             </p>
                         </div>
                     </div>
@@ -210,11 +230,84 @@
         </div>
     </div>
 
+    <div id="criticality-modal" class="fixed inset-0 bg-gray-900 bg-opacity-60 hidden items-center justify-center p-4 z-50 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-0 transform transition-all scale-100 overflow-hidden">
+            <div class="bg-red-600 p-4 flex justify-between items-center">
+                <h3 class="text-white font-bold text-lg flex items-center">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.3 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    Definición de Registros Críticos
+                </h3>
+                <button onclick="closeCriticalityModal()" class="text-red-200 hover:text-white text-2xl font-bold leading-none focus:outline-none">&times;</button>
+            </div>
+            
+            <div class="p-6 space-y-4">
+                <p class="text-gray-700 text-base">Un registro se clasifica en Estado Crítico si cumple <span class="font-bold text-red-700">al menos una</span> de las siguientes dos condiciones de extrema severidad:</p>
+                
+                <ul class="space-y-3 bg-red-50 p-4 rounded-lg border border-red-200">
+                    <li class="flex items-start">
+                        <span class="text-red-600 font-extrabold text-2xl mr-3 leading-none">1.</span>
+                        <div>
+                            <span class="font-bold text-gray-900 block">Umbral Dinámico P10 (Score)</span>
+                            <p class="text-sm text-gray-600">El registro se encuentra en el 10% inferio de todos los puntajes de calidad, es decir, su `PUNTAJE_CALIDAD` es menor al Percentil 10 (P10) del conjunto de datos.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-red-600 font-extrabold text-2xl mr-3 leading-none">2.</span>
+                        <div>
+                            <span class="font-bold text-gray-900 block">Falla Catastrófica (Consistencia)</span>
+                            <p class="text-sm text-gray-600">El registro acumula 4 o más errores de Consistencia (reglas de lógica de negocio fallidas), indicando una corrupción grave de los campos esenciales.</p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="flex justify-end pt-3">
+                    <button onclick="closeCriticalityModal()" class="bg-red-100 hover:bg-red-200 text-red-700 font-semibold py-2 px-4 rounded focus:outline-none transition">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="hallazgos-modal" class="fixed inset-0 bg-gray-900 bg-opacity-60 hidden items-center justify-center p-4 z-50 backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-0 transform transition-all scale-100 overflow-hidden">
+            <div class="bg-orange-600 p-4 flex justify-between items-center">
+                <h3 class="text-white font-bold text-lg flex items-center">
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Definición de Hallazgos de Consistencia
+                </h3>
+                <button onclick="closeHallazgosModal()" class="text-orange-200 hover:text-white text-2xl font-bold leading-none focus:outline-none">&times;</button>
+            </div>
+            
+            <div class="p-6 space-y-4">
+                <p class="text-gray-700 text-base">Esta métrica mide la cobertura total de los problemas de calidad de la base de datos.</p>
+                
+                <ul class="space-y-3 bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <li class="flex items-start">
+                        <span class="text-orange-600 font-extrabold text-2xl mr-3 leading-none">🎯</span>
+                        <div>
+                            <span class="font-bold text-gray-900 block">Propósito (Cobertura General)</span>
+                            <p class="text-sm text-gray-600">Representa el porcentaje de registros que tienen al menos un (1) error de Consistencia (lógica de negocio rota o dato nulo esencial). Mide la prevalencia de defectos.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-orange-600 font-extrabold text-2xl mr-3 leading-none">⚠️</span>
+                        <div>
+                            <span class="font-bold text-gray-900 block">Diferencia con 'Crítico'</span>
+                            <p class="text-sm text-gray-600">Este valor es típicamente más alto que el Estado Crítico (9.05%), ya que incluye errores menores que no afectan drásticamente el puntaje, mientras que el Crítico se enfoca en la severidad.</p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="flex justify-end pt-3">
+                    <button onclick="closeHallazgosModal()" class="bg-orange-100 hover:bg-orange-200 text-orange-700 font-semibold py-2 px-4 rounded focus:outline-none transition">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         let fullData = [];
 
         function initDashboard() {
-            // Cargar JSON (Asumimos que el JSON está en 'data_reporte_calidad.json')
+            // Cargar JSON: busca data_reporte_calidad.json en el mismo directorio.
             fetch('data_reporte_calidad.json')
                 .then(res => {
                     if (!res.ok) throw new Error("No se pudo cargar data_reporte_calidad.json");
@@ -229,7 +322,7 @@
                     console.error("Error:", err);
                     document.getElementById('total-registros').textContent = 'ERROR';
                     document.getElementById('puntaje-promedio').textContent = 'N/A';
-                    alert("Error cargando los datos. Asegúrese de ejecutar el script PySpark primero.");
+                    alert("Error: El archivo JSON de datos no se encontró. Por favor, asegúrese de EJECUTAR el script PySpark primero y de que el archivo 'data_reporte_calidad.json' esté en la misma carpeta que este HTML.");
                 });
         }
 
@@ -237,8 +330,6 @@
             document.getElementById('puntaje-promedio').textContent = summary.puntaje_promedio;
             document.getElementById('total-registros').textContent = summary.total_registros;
             document.getElementById('pct-criticos').textContent = summary.porcentaje_criticos;
-            
-            // Tarjetas corregidas
             document.getElementById('total-reglas').textContent = summary.total_reglas;
             document.getElementById('pct-hallazgos').textContent = summary.porcentaje_hallazgos_global;
         }
@@ -313,10 +404,39 @@
             modal.classList.remove('flex');
         }
 
+        // FUNCIONES PARA EL MODAL DE CRITICIDAD
+        function showCriticalityDocs() {
+            const modal = document.getElementById('criticality-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeCriticalityModal() {
+            const modal = document.getElementById('criticality-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // FUNCIONES PARA EL MODAL DE HALLAZGOS (NUEVAS)
+        function showHallazgosDocs() {
+            const modal = document.getElementById('hallazgos-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeHallazgosModal() {
+            const modal = document.getElementById('hallazgos-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+
         document.onkeydown = function(evt) {
             evt = evt || window.event;
             if (evt.keyCode == 27) {
-                closeModal();
+                closeModal(); 
+                closeCriticalityModal(); 
+                closeHallazgosModal(); 
             }
         };
 
