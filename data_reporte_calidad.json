@@ -26,11 +26,11 @@
         },
         {
             "technical_name": "nombre_natujur",
-            "readable_name": "Naturaleza Jurídica: Valor no Estandarizado",
+            "readable_name": "NOMBRE_NATUJUR: Caracteres Acentuados/Especiales",
             "affected_count": "18,330,009",
             "affected_pct": "59.31%",
             "type": "Formato",
-            "description": "El valor en el campo NATU_JURIDICA no coincide con ninguno de los valores estandarizados esperados (natural, jurídica, etc.) según el maestro de clasificación."
+            "description": "El valor en el campo NOMBRE_NATUJUR posee valores sin tildes."
         },
         {
             "technical_name": "estado_folio_nulo",
