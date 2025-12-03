@@ -60,7 +60,7 @@
 
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
             <div class="bg-white p-5 rounded-xl shadow-sm border-t-4 border-indigo-600 relative overflow-hidden">
-                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide z-10 relative">Puntaje Calidad</p>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-wide z-10 relative">SCORE DE CALIDAD PROMEDIO</p>
                 <div class="flex items-baseline mt-2 relative z-10">
                     <p id="puntaje-promedio" class="text-3xl font-extrabold text-gray-900">--</p>
                     <span class="text-sm text-gray-500 ml-1 font-medium">/ 100</span>
@@ -92,7 +92,7 @@
             <div id="criticality-card" onclick="showCriticalityDocs()" 
                  class="bg-white p-5 rounded-xl shadow-sm border-t-4 border-red-500 cursor-pointer hover:shadow-lg transition duration-200">
                 <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">
-                    % Estado Crítico 
+                    % REGISTROS EN ESTADO CRÍTICO 
                     <span class="ml-1 text-red-400">
                         <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     </span>
@@ -139,37 +139,19 @@
                     </div>
                 </div>
             </div>
-
             <div class="lg:col-span-1">
                 <div class="bg-white shadow-xl rounded-xl p-6 border border-gray-100 h-full">
                     <h3 class="text-lg font-bold text-indigo-900 mb-6 flex items-center border-b pb-4">
                         <svg class="w-6 h-6 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                        Metodología de Cálculo
+                        Interpretación del Detalle de Reglas
                     </h3>
                     
                     <div class="space-y-8 text-sm text-gray-600">
-                        
-                        <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-100 relative">
-                            <div class="absolute top-0 left-0 w-1 h-full bg-indigo-500 rounded-l-lg"></div>
-                            <p class="font-bold text-indigo-900 mb-3 text-base">Fórmula de Puntaje Ponderado (Normalizado)</p>
-                            <div class="font-mono text-xs bg-white p-3 rounded border border-indigo-200 mb-3 text-center text-indigo-700 font-bold shadow-sm">
-                                SCORE = 100 - [ (Σ Penalización Ponderada / Total Puntos Posibles) x 100 ]
-                            </div>
-
-                            <div class="mt-4 pt-3 border-t border-indigo-200">
-                                <span class="font-bold text-indigo-900 block mb-1">Total Puntos Posibles (T.P.P.)</span>
-                                <p class="text-xs leading-relaxed text-indigo-800">
-                                    Este valor (e.g., 88 puntos) es la suma de los pesos de todas las reglas definidas en el sistema. Se calcula dinámicamente como la máxima penalización posible:
-                                    <span class="font-mono bg-indigo-100 px-1 py-0.5 rounded text-indigo-800 block mt-1 mt-2 p-2 border border-indigo-200">
-                                        T.P.P. = (Total Reglas Formato x 1) + (Total Reglas Consistencia x 2)
-                                    </span>
-                                </p>
-                            </div>
 
                         <div>
                             <h4 class="font-bold text-gray-800 mb-4 text-base">Pesos y Ponderación</h4>
                             <p class="mb-4 text-xs leading-relaxed text-gray-500">
-                                El modelo penaliza con mayor severidad los errores que comprometen la integridad analítica del dato (Consistencia) frente a los errores estéticos (Formato).
+                                El puntaje de calidad se calcula penalizando cada error con un peso, siendo los errores de consistencia más graves (Peso Alto = 2) que los de formato (Peso Bajo = 1).
                             </p>
                             
                             <ul class="space-y-4">
@@ -177,31 +159,44 @@
                                     <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs mr-3">F</div>
                                     <div>
                                         <span class="block font-bold text-gray-900">Errores de Formato</span>
-                                        <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Peso Bajo</span>
-                                        <p class="text-xs mt-1 text-gray-500">Sintaxis, mayúsculas o caracteres especiales. No invalidan el uso del dato.</p>
+                                        <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Peso Bajo (1 punto)</span>
+                                        <p class="text-xs mt-1 text-gray-500">Sintaxis o caracteres especiales. Impacto menor en el análisis.</p>
                                     </div>
                                 </li>
                                 <li class="flex items-start">
                                     <div class="flex-shrink-0 h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-xs mr-3">C</div>
                                     <div>
                                         <span class="block font-bold text-gray-900">Errores de Consistencia</span>
-                                        <span class="text-xs font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">Peso Alto</span>
-                                        <p class="text-xs mt-1 text-gray-500">Lógica de negocio rota (fechas futuras, valor cero, duplicados). Invalidan el registro.</p>
+                                        <span class="text-xs font-semibold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded">Peso Alto (2 puntos)</span>
+                                        <p class="text-xs mt-1 text-gray-500">Fallas de lógica (nulos esenciales, valores cero, inconsistencias). Invalidan el dato.</p>
                                     </div>
                                 </li>
                             </ul>
                         </div>
 
                         <div class="border-t pt-4 mt-2">
-                            <p class="text-xs italic text-gray-400">
-                                * Nota sobre Reglas Activas: Las reglas de calidad que aparecen en la tabla son aquellas que detectaron
-                                al menos un registro inconsistente. Las demás reglas evaluadas que no se visualizan en el reporte concluyeron
-                                que no hubo problemas con ellas (0 registros afectados).
+                            <h4 class="font-bold text-gray-800 mb-4 text-base">Sobre el Porcentaje de Afectación (Tabla)</h4>
+                            <p class="text-xs leading-relaxed text-gray-500">
+                                La columna **"% Afectación"** en la tabla mide la **frecuencia individual** con la que la base de datos incumple **una única regla**.
+                            </p>
+                        </div>
+                        
+                        <div class="bg-indigo-50 p-5 rounded-lg border border-indigo-100 relative">
+                            <div class="absolute top-0 left-0 w-1 h-full bg-indigo-500 rounded-l-lg"></div>
+                            <p class="font-bold text-indigo-900 mb-3 text-base">Fórmula del Puntaje de Calidad (SCORE)</p>
+                            <div class="font-mono text-xs bg-white p-3 rounded border border-indigo-200 mb-3 text-center text-indigo-700 font-bold shadow-sm">
+                                SCORE = 100 - [ (Σ Penalización Ponderada / Total Puntos Posibles) x 100 ]
+                            </div>
+                            <p class="text-xs leading-relaxed text-indigo-800">
+                                El **Total Puntos Posibles (T.P.P.)** es la suma de los pesos de *todas las reglas* evaluadas, lo que permite normalizar la penalización a un rango de 0 a 100.
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
+
+        </div> </div>
+            
 
         </div> </div>
 
