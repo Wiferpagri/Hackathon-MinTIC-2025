@@ -26,7 +26,7 @@
         },
         {
             "technical_name": "nombre_natujur",
-            "readable_name": "NOMBRE_NATUJUR: Caracteres Acentuados/Especiales",
+            "readable_name": "nombre_natujur: Caracteres Acentuados/Especiales",
             "affected_count": "18,330,009",
             "affected_pct": "59.31%",
             "type": "Formato",
